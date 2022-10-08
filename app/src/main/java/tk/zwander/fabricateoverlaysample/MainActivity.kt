@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
                     FabricatedOverlayEntry(
                         "$systemUIPackage:dimen/biometric_dialog_border_padding",
                         TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 24)
+                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 0)
                     ),
                     FabricatedOverlayEntry(
                         "$systemUIPackage:dimen/biometric_dialog_corner_size",
