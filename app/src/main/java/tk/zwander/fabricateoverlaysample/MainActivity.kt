@@ -163,6 +163,21 @@ class MainActivity : AppCompatActivity() {
                         "$systemUIPackage:dimen/biometric_dialog_corner_size",
                         TypedValue.TYPE_DIMENSION,
                         getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
+                    ),
+                    FabricatedOverlayEntry(
+                        "$systemUIPackage:dimen/global_actions_translate",
+                        TypedValue.TYPE_DIMENSION,
+                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 0)
+                    ),
+                    FabricatedOverlayEntry(
+                        "$systemUIPackage:color/material_dynamic_primary90",
+                        TypedValue.TYPE_INT_COLOR_ARGB8,
+                        getParsedColor("0xffffffff")
+                    ),
+                    FabricatedOverlayEntry(
+                        "$systemUIPackage:dimen/status_bar_system_icon_spacing",
+                        TypedValue.TYPE_DIMENSION,
+                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 0)
                     )
                 ).forEach { overlay ->
                     entries[overlay.resourceName] = overlay
@@ -188,6 +203,10 @@ class MainActivity : AppCompatActivity() {
 
     fun String.overlay(): String {
         return "$packageName.$this.overlay"
+    }
+
+    fun getParsedColor(value: String): Int {
+        return Integer.parseUnsignedInt(value.substring(2), 16)
     }
 
     fun getParsedDimen(type: Int, value: Int): Int {
