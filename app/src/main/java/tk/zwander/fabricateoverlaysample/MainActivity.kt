@@ -2,6 +2,7 @@ package tk.zwander.fabricateoverlaysample
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
@@ -96,6 +97,9 @@ class MainActivity : AppCompatActivity() {
                             activity.setTitle(R.string.apps)
 
                             AppListPage(navController)
+                        }
+                        composable("app_others") {
+                            startActivity(Intent(this@MainActivity, OthersActivity::class.java))
                         }
                         composable(
                             route = "list_overlays"
@@ -197,8 +201,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Runtime.getRuntime().exec("su -c service call SurfaceFlinger 1022 f 1.20").waitFor()
-        Runtime.getRuntime().exec("su -c setprop persist.sys.sf.color_saturation 1.20").waitFor()
+        val saturation = Prefs.saturationValue
+        Runtime.getRuntime().exec("su -c service call SurfaceFlinger 1022 f $saturation").waitFor()
+        Runtime.getRuntime().exec("su -c setprop persist.sys.sf.color_saturation $saturation")
+            .waitFor()
     }
 
     fun String.overlay(): String {

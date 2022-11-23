@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".OthersActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/saturationValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Override Saturation" />
+
+            <Button
+                android:id="@+id/saveSaturation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Saturation"
+                android:textAllCaps="false" />
+
+            <EditText
+                android:id="@+id/packageName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Package Name" />
+
+            <EditText
+                android:id="@+id/resourceTypeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="resource_type/resource_name" />
+
+            <EditText
+                android:id="@+id/resourceValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="resource_value" />
+
+            <EditText
+                android:id="@+id/overlayName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Overlay Name" />
+
+            <Button
+                android:id="@+id/saveOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Overlay"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

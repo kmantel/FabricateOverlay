@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -39,6 +40,25 @@ fun HomePage(
             ) {
                 Text(
                     text = stringResource(R.string.add_overlay),
+                    fontSize = 24.sp,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            OutlinedButton(
+                onClick = {
+                    navController.navigate("app_others")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp),
+            ) {
+                Text(
+                    text = AnnotatedString("Others"),
                     fontSize = 24.sp,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
