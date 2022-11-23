@@ -36,10 +36,68 @@
                 android:hint="Package Name" />
 
             <EditText
-                android:id="@+id/resourceTypeName"
+                android:id="@+id/resourceName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="resource_type/resource_name" />
+                android:hint="resource_name" />
+
+            <RadioGroup
+                android:id="@+id/resourceType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/dimen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="dimen" />
+
+                <RadioButton
+                    android:id="@+id/bool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="bool" />
+
+                <RadioButton
+                    android:id="@+id/color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="color" />
+
+                <RadioButton
+                    android:id="@+id/integer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="integer" />
+
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/dimenType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="dp" />
+
+                <RadioButton
+                    android:id="@+id/px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="px" />
+
+            </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/boolValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Boolean Value" />
 
             <EditText
                 android:id="@+id/resourceValue"
