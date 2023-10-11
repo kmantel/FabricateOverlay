@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.TypedValue
@@ -203,6 +204,32 @@ class MainActivity : AppCompatActivity() {
                         overlay.sourcePackage
                     ), true, 0
                 )
+            }
+        }
+
+        OverlayAPI.getInstance(this) { api ->
+            val listOfFOs = api.getAllOverlays(-2).mapNotNull { (key, value) ->
+                val filtered = value.filter { item ->
+                    item.isFabricated && item.overlayName?.contains(packageName) == true
+                }
+                if (filtered.isEmpty()) null
+                else (packageManager.run {
+                    try {
+                        getApplicationInfo(key, 0).loadLabel(this)
+                    } catch (nameNotFoundException: PackageManager.NameNotFoundException) {
+                        //package has been uninstalled before uninstalling related overlays
+                        key
+                    }
+                }.toString() to filtered)
+            }.toMap().toSortedMap { o1, o2 -> o1.compareTo(o2, true) }
+            listOfFOs.forEach { (t, u) ->
+                u.filter { it.overlayName?.endsWith(".overlay") == false }.forEach {
+                    api.setEnabled(
+                        FabricatedOverlay.generateOverlayIdentifier(
+                            it.overlayName, it.packageName
+                        ), it.isEnabled, 0
+                    )
+                }
             }
         }
 
