@@ -160,9 +160,24 @@ class MainActivity : AppCompatActivity() {
                         getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, -300)
                     ),
                     FabricatedOverlayEntry(
+                        "$systemUIPackage:dimen/qs_top_brightness_margin_top",
+                        TypedValue.TYPE_DIMENSION,
+                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
+                    ),
+                    FabricatedOverlayEntry(
                         "$systemUIPackage:dimen/qs_top_brightness_margin_bottom",
                         TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 20)
+                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
+                    ),
+                    FabricatedOverlayEntry(
+                        "$systemUIPackage:dimen/qs_brightness_margin_top",
+                        TypedValue.TYPE_DIMENSION,
+                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
+                    ),
+                    FabricatedOverlayEntry(
+                        "$systemUIPackage:dimen/qs_brightness_margin_bottom",
+                        TypedValue.TYPE_DIMENSION,
+                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
                     ),
                     FabricatedOverlayEntry(
                         "$systemUIPackage:dimen/biometric_dialog_border_padding",
