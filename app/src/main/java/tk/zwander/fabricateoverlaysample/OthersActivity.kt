@@ -23,11 +23,15 @@ class OthersActivity : AppCompatActivity() {
             Prefs.saturationValue = binding.saturationValue.text.toString()
 
             val saturation = Prefs.saturationValue
-            Runtime.getRuntime().exec("su -c service call SurfaceFlinger 1022 f $saturation")
-                .waitFor()
-            Runtime.getRuntime().exec("su -c setprop persist.sys.sf.color_saturation $saturation")
-                .waitFor()
-            Toast.makeText(this, "Saturation Set Successfully", Toast.LENGTH_LONG).show()
+            try {
+                Runtime.getRuntime().exec("su -c service call SurfaceFlinger 1022 f $saturation")
+                    .waitFor()
+                Runtime.getRuntime()
+                    .exec("su -c setprop persist.sys.sf.color_saturation $saturation")
+                    .waitFor()
+                Toast.makeText(this, "Saturation Set Successfully", Toast.LENGTH_LONG).show()
+            } catch (e: Exception) {
+            }
         }
 
         val sourcePackage = OverlayAPI.servicePackage ?: "com.android.shell"
