@@ -7,7 +7,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import android.util.TypedValue
 import android.widget.TextView
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +24,6 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import tk.zwander.fabricateoverlay.FabricatedOverlay
-import tk.zwander.fabricateoverlay.FabricatedOverlayEntry
 import tk.zwander.fabricateoverlay.OverlayAPI
 import tk.zwander.fabricateoverlay.ShizukuUtils
 import tk.zwander.fabricateoverlaysample.ui.pages.AppListPage
@@ -123,105 +121,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val launcherPackage = "com.android.launcher3"
-        val systemUIPackage = "com.android.systemui"
-        val sourcePackage = OverlayAPI.servicePackage ?: "com.android.shell"
-
-        val listOfOverlays = listOf(
-            FabricatedOverlay(
-                launcherPackage.overlay(),
-                launcherPackage,
-                sourcePackage
-            ).apply {
-                listOf(
-                    FabricatedOverlayEntry(
-                        "$launcherPackage:dimen/all_apps_search_bar_bottom_padding",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 50)
-                    )
-                ).forEach { overlay ->
-                    entries[overlay.resourceName] = overlay
-                }
-            },
-            FabricatedOverlay(
-                systemUIPackage.overlay(),
-                systemUIPackage,
-                sourcePackage
-            ).apply {
-                listOf(
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/keyguard_large_clock_top_margin",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, -300)
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/keyguard_affordance_vertical_offset",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, -300)
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/qs_top_brightness_margin_top",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/qs_top_brightness_margin_bottom",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/qs_brightness_margin_top",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/qs_brightness_margin_bottom",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/biometric_dialog_border_padding",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 0)
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/biometric_dialog_corner_size",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 16)
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/global_actions_translate",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 0)
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:color/material_dynamic_primary90",
-                        TypedValue.TYPE_INT_COLOR_ARGB8,
-                        getParsedColor("0xffffffff")
-                    ),
-                    FabricatedOverlayEntry(
-                        "$systemUIPackage:dimen/status_bar_system_icon_spacing",
-                        TypedValue.TYPE_DIMENSION,
-                        getParsedDimen(TypedValue.COMPLEX_UNIT_DIP, 0)
-                    )
-                ).forEach { overlay ->
-                    entries[overlay.resourceName] = overlay
-                }
-            }
-        )
-
-        OverlayAPI.getInstance(this) { api ->
-            listOfOverlays.forEach { overlay ->
-                api.registerFabricatedOverlay(overlay)
-                api.setEnabled(
-                    FabricatedOverlay.generateOverlayIdentifier(
-                        overlay.overlayName,
-                        overlay.sourcePackage
-                    ), true, 0
-                )
-            }
-        }
-
         OverlayAPI.getInstance(this) { api ->
             val listOfFOs = api.getAllOverlays(-2).mapNotNull { (key, value) ->
                 val filtered = value.filter { item ->
@@ -258,17 +157,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun String.overlay(): String {
-        return "$packageName.$this.overlay"
-    }
-
-    fun getParsedColor(value: String): Int {
-        return Integer.parseUnsignedInt(value.substring(2), 16)
-    }
-
-    fun getParsedDimen(type: Int, value: Int): Int {
-        return TypedValue::class.java
-            .getMethod("createComplexDimension", Int::class.java, Int::class.java)
-            .invoke(null, value, type) as Int
-    }
 }
