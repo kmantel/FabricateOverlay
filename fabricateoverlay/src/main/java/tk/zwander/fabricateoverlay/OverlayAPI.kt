@@ -7,8 +7,11 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.util.TypedValue
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuBinderWrapper
+import tk.zwander.fabricateoverlay.OverlayAPI.Companion.getInstance
+import tk.zwander.fabricateoverlay.OverlayAPI.Companion.getInstanceDirect
 
 /**
  * The main API for registering and unregistering fabricated overlays.
@@ -192,13 +195,38 @@ class OverlayAPI private constructor(private val iomService: IBinder) {
             Int::class.java
         )
 
+        val setResourceValueMethod2 = fobClass.getMethod(
+            "setResourceValue",
+            String::class.java,
+            Int::class.java,
+            String::class.java
+        )
+
         overlay.entries.forEach { (_, entry) ->
-            setResourceValueMethod.invoke(
-                fobInstance,
-                entry.resourceName,
-                entry.resourceType,
-                entry.resourceValue
-            )
+            if (android.os.Build.VERSION.SDK_INT >= 34) {
+                if (entry.resourceType == TypedValue.TYPE_DIMENSION) {
+                    setResourceValueMethod2.invoke(
+                        fobInstance,
+                        entry.resourceName,
+                        entry.resourceType,
+                        "0x5000"
+                    )
+                } else {
+                    setResourceValueMethod.invoke(
+                        fobInstance,
+                        entry.resourceName,
+                        entry.resourceType,
+                        entry.resourceValue
+                    )
+                }
+            } else {
+                setResourceValueMethod.invoke(
+                    fobInstance,
+                    entry.resourceName,
+                    entry.resourceType,
+                    entry.resourceValue
+                )
+            }
         }
 
         val foInstance = fobClass.getMethod("build")
