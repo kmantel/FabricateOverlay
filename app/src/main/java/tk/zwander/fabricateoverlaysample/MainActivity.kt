@@ -117,14 +117,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        setSaturation()
+    }
 
-        val saturation = Prefs.saturationValue
-        try {
-            Runtime.getRuntime().exec("su -c service call SurfaceFlinger 1022 f $saturation")
-                .waitFor()
-            Runtime.getRuntime().exec("su -c setprop persist.sys.sf.color_saturation $saturation")
-                .waitFor()
-        } catch (e: Exception) {
+    companion object {
+        fun setSaturation() {
+            val saturation = Prefs.saturationValue
+            try {
+                Runtime.getRuntime().exec("su -c service call SurfaceFlinger 1022 f $saturation")
+                    .waitFor()
+                Runtime.getRuntime()
+                    .exec("su -c setprop persist.sys.sf.color_saturation $saturation").waitFor()
+            } catch (ignored: Exception) {
+            }
         }
     }
 
