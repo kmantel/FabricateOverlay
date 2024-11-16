@@ -1,53 +1,90 @@
-name: Android CI
+name: Build Android APK
+run-name: ${{ github.event.inputs.repository }}:${{ github.event.inputs.taskName }}
 
 on:
-
-  push:
-
-    branches: [ master ]
-
-  pull_request:
-
-    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: "Git repository URL"
+        required: true
+        default: "https://github.com/android/sunflower"
+      jdkVersion:
+        description: "OpenJDK version to use: 8 / 11 / 17 etc."
+        required: false
+        default: "17"
+      taskName:
+        description: "build.gradle task name: assemble[Flavor]Debug"
+        required: false
+        default: "assembleDebug"
 
 jobs:
-
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-latest # Android SDK is built-in in this image
     steps:
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ github.event.inputs.jdkVersion }}
 
-    - uses: actions/checkout@v2
+      - name: Clone project
+        run: git clone --recurse-submodules --depth=1 ${{ github.event.inputs.repository }} workspace
 
-    - name: set up JDK 11
+      - name: Build APK
+        working-directory: ./workspace
+        run: |
+          if [ ! -f "gradlew" ]; then gradle wrapper; fi
+          chmod +x gradlew
+          ./gradlew ${{ github.event.inputs.taskName }} --stacktrace
 
-      uses: actions/setup-java@v2
+      - name: Upload the Aname: Build Android APK
+run-name: ${{ github.event.inputs.repository }}:${{ github.event.inputs.taskName }}
 
-      with:
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: "Git repository URL"
+        required: true
+        default: "https://github.com/android/sunflower"
+      jdkVersion:
+        description: "OpenJDK version to use: 8 / 11 / 17 etc."
+        required: false
+        default: "17"
+      taskName:
+        description: "build.gradle task name: assemble[Flavor]Debug"
+        required: false
+        default: "assembleDebug"
 
-        java-version: '11'
+jobs:
+  build:
+    runs-on: ubuntu-latest # Android SDK is built-in in this image
+    steps:
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ github.event.inputs.jdkVersion }}
 
-        distribution: 'adopt'
+      - name: Clone project
+        run: git clone --recurse-submodules --depth=1 ${{ github.event.inputs.repository }} workspace
 
-        cache: gradle
+      - name: Build APK
+        working-directory: ./workspace
+        run: |
+          if [ ! -f "gradlew" ]; then gradle wrapper; fi
+          chmod +x gradlew
+          ./gradlew ${{ github.event.inputs.taskName }} --stacktrace
 
-    - name: Grant execute permission for gradlew
-
-      run: chmod +x gradlew
-
-    - name: Build with Gradle
-
-      run: ./gradlew assembleDebug --stacktrace
-
-    - name: Upload apk
-
-      uses: actions/upload-artifact@v2
-
-      with:
-
-        name: OverlayManager_dbg_apk
-
-        path: app/build/outputs/apk/debug/*.apk
-
-        if-no-files-found: error
+      - name: Upload the APK artifact with 1 day retention
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./**/*.apk
+          name: apk-archive
+          retention-days: 1PK artifact with 1 day retention
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./**/*.apk
+          name: apk-archive
+          retention-days: 1
+          
