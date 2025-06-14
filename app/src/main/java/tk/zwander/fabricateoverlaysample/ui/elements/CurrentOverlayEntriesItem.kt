@@ -62,6 +62,7 @@ fun CurrentOverlayEntriesItem(
                     TypedValue.TYPE_INT_COLOR_ARGB8 -> "0x${"%1$08x".format(info.resourceValue)}"
                     TypedValue.TYPE_INT_BOOLEAN -> (info.resourceValue == 1).toString()
                     TypedValue.TYPE_DIMENSION -> TypedValue.coerceToString(info.resourceType, info.resourceValue)
+                    TypedValue.TYPE_STRING -> info.resourceValueString
                     else -> throw IllegalArgumentException("Invalid type ${info.resourceType}")
                 })
             }

@@ -71,6 +71,12 @@
                     android:layout_height="wrap_content"
                     android:text="integer" />
 
+                <RadioButton
+                    android:id="@+id/string"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="string" />
+
             </RadioGroup>
 
             <RadioGroup

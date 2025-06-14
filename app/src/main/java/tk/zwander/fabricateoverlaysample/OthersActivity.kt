@@ -43,6 +43,7 @@ class OthersActivity : AppCompatActivity() {
             val isBool = binding.bool.isChecked
             val isColor = binding.color.isChecked
             val isInteger = binding.integer.isChecked
+            val isString = binding.string.isChecked
             val isDimenDp = binding.dp.isChecked
             val isDimenPx = binding.px.isChecked
             val booleanValue = binding.boolValue.isChecked
@@ -54,6 +55,7 @@ class OthersActivity : AppCompatActivity() {
                 isBool -> "bool"
                 isColor -> "color"
                 isInteger -> "integer"
+                isString -> "string"
                 else -> ""
             }
 
@@ -62,6 +64,7 @@ class OthersActivity : AppCompatActivity() {
                 "bool" -> TypedValue.TYPE_INT_BOOLEAN
                 "color" -> TypedValue.TYPE_INT_COLOR_ARGB8
                 "integer" -> TypedValue.TYPE_INT_DEC
+                "string" -> TypedValue.TYPE_STRING
                 else -> TypedValue.TYPE_NULL
             }
 
@@ -93,7 +96,8 @@ class OthersActivity : AppCompatActivity() {
                         FabricatedOverlayEntry(
                             "$packageNameValue:$resourceTypeString/$resourceName",
                             resourceType,
-                            resourceValueFinal
+                            resourceValueFinal,
+                            resourceValue
                         ),
                     ).forEach { overlay ->
                         entries[overlay.resourceName] = overlay

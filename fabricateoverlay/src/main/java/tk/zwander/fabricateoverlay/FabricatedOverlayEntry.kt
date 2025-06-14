@@ -12,5 +12,6 @@ package tk.zwander.fabricateoverlay
 data class FabricatedOverlayEntry(
     var resourceName: String,
     var resourceType: Int,
-    var resourceValue: Int
+    var resourceValue: Int,
+    var resourceValueString: String = ""
 )

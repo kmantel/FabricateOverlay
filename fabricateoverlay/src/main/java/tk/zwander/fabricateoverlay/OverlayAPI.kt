@@ -195,28 +195,31 @@ class OverlayAPI private constructor(private val iomService: IBinder) {
             Int::class.java,
             Int::class.java
         )
-
-        lateinit var setResourceValueMethod2: Method
-
-        if (android.os.Build.VERSION.SDK_INT >= 34) {
-            setResourceValueMethod2 = fobClass.getMethod(
-                "setResourceValue",
-                String::class.java,
-                Int::class.java,
-                String::class.java
-            )
-        }
+        val setResourceValueMethodString = fobClass.getMethod(
+            "setResourceValue",
+            String::class.java,
+            Int::class.java,
+            String::class.java
+        )
 
         overlay.entries.forEach { (_, entry) ->
-            if (android.os.Build.VERSION.SDK_INT >= 34) {
-                if (entry.resourceType == TypedValue.TYPE_DIMENSION) {
-                    setResourceValueMethod2.invoke(
+            if (android.os.Build.VERSION.SDK_INT >= 34 && entry.resourceType == TypedValue.TYPE_DIMENSION) {
+                setResourceValueMethodString.invoke(
+                    fobInstance,
+                    entry.resourceName,
+                    entry.resourceType,
+                    "0x5000"
+                )
+            } else {
+                if (entry.resourceType == TypedValue.TYPE_STRING) {
+                    setResourceValueMethodString.invoke(
                         fobInstance,
                         entry.resourceName,
                         entry.resourceType,
-                        "0x5000"
+                        entry.resourceValueString
                     )
-                } else {
+                }
+                else {
                     setResourceValueMethod.invoke(
                         fobInstance,
                         entry.resourceName,
@@ -224,13 +227,6 @@ class OverlayAPI private constructor(private val iomService: IBinder) {
                         entry.resourceValue
                     )
                 }
-            } else {
-                setResourceValueMethod.invoke(
-                    fobInstance,
-                    entry.resourceName,
-                    entry.resourceType,
-                    entry.resourceValue
-                )
             }
         }
 
